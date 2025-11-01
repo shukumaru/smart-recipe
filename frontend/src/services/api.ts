@@ -12,21 +12,35 @@ export interface GenerateRecipeOptions {
   servings?: number;
 }
 
-export const generateRecipes = async (
-  options: GenerateRecipeOptions
-): Promise<Recipe[]> => {
-  const response = await fetch(`${API_URL}/recipe/generate`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(options),
-  });
+export const createApiClient = (idToken: string | null) => {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "レシピの生成に失敗しました。");
+  if (idToken) {
+    headers["Authorization"] = `Bearer ${idToken}`;
   }
 
-  return response.json();
+  const generateRecipes = async (
+    options: GenerateRecipeOptions
+  ): Promise<Recipe[]> => {
+    const response = await fetch(`${API_URL}/recipe/generate`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(options),
+    });
+
+    if (!response.ok) {
+      // For 401/403 errors, the response might not be JSON.
+      if (response.status === 401 || response.status === 403) {
+        throw new Error("認証エラーが発生しました。再度ログインしてください。");
+      }
+      const errorData = await response.json().catch(() => ({ message: 'レシピの生成に失敗しました。' }));
+      throw new Error(errorData.message || "レシピの生成に失敗しました。");
+    }
+
+    return response.json();
+  };
+
+  return { generateRecipes };
 };

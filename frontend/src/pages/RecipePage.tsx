@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import type { Recipe } from "../types/recipe";
-import { generateRecipes } from "../services/api";
+import { createApiClient } from "../services/api";
 import styles from "./RecipePage.module.css";
 import {
   ingredientSuggestions,
@@ -9,6 +9,11 @@ import {
   recipeCountOptions,
   genreOptions,
 } from "../constants";
+
+// Props for RecipePage, including the idToken
+interface RecipePageProps {
+  idToken: string | null;
+}
 
 // Modal Component for Recipe Detail
 const RecipeDetailModal: React.FC<{
@@ -50,7 +55,7 @@ const RecipeDetailModal: React.FC<{
   );
 };
 
-const RecipePage: React.FC = () => {
+const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
   const [ingredientInputs, setIngredientInputs] = useState<string[]>(
     Array(3).fill("")
   );
@@ -100,6 +105,11 @@ const RecipePage: React.FC = () => {
   }, [ingredientInputs, commaIngredients, ingredientErrors]);
 
   const handleSuggestionClick = async () => {
+    if (!idToken) {
+      setError("Googleアカウントでログインしてください。");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setRecipes([]);
@@ -111,6 +121,7 @@ const RecipePage: React.FC = () => {
     }
 
     try {
+      const apiClient = createApiClient(idToken);
       const options = {
         ingredients: allIngredients,
         cookingTime,
@@ -120,9 +131,9 @@ const RecipePage: React.FC = () => {
         isCamping,
         servings,
       };
-      const result = await generateRecipes(options);
+      const result = await apiClient.generateRecipes(options);
       setRecipes(result);
-    } catch (err: any) {
+    } catch (err: any) { 
       setError(err.message || "不明なエラーが発生しました。");
       setRecipes([]);
     } finally {
@@ -139,6 +150,21 @@ const RecipePage: React.FC = () => {
     setIsModalOpen(false);
     setSelectedRecipe(null);
   };
+
+  const getButtonState = () => {
+    if (!idToken) {
+      return { disabled: true, text: "ログインしてください" };
+    }
+    if (isLoading) {
+      return { disabled: true, text: "AIが考え中..." };
+    }
+    if (allIngredients.length === 0) {
+      return { disabled: true, text: "材料を入力してください" };
+    }
+    return { disabled: false, text: "AIに献立を提案してもらう" };
+  };
+
+  const buttonState = getButtonState();
 
   return (
     <div className={styles.container}>
@@ -275,9 +301,9 @@ const RecipePage: React.FC = () => {
       <button
         className={styles.button}
         onClick={handleSuggestionClick}
-        disabled={isLoading || allIngredients.length === 0}
+        disabled={buttonState.disabled}
       >
-        {isLoading ? "AIが考え中..." : "AIに献立を提案してもらう"}
+        {buttonState.text}
       </button>
 
       <div className={styles.resultsSection}>
