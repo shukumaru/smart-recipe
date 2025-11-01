@@ -44,7 +44,7 @@ export class GeminiService {
       - title: string (レシピ名（何人分）)
       - ingredients: { name: string; quantity: string }[] (必要な材料と分量のリスト)
       - time: number (調理時間、分単位)
-      - steps: string[] (作り方の手順をステップバイステップで)
+      - steps: string[] (作り方の手順をステップバイステップで。焼いたり、煮込んだりする場合は時間の目安も付ける)
 
       条件:
       - 材料: ${ingredients.join(', ')}
