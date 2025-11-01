@@ -23,7 +23,9 @@ export class GeminiService {
     isCamping?: boolean;
     servings?: number;
   }): Promise<any> {
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = this.genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash-lite',
+    });
 
     const {
       ingredients,
@@ -83,7 +85,9 @@ export class GeminiService {
     if (ingredients.length === 0) {
       return true; // No ingredients to validate
     }
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = this.genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash-lite',
+    });
     const prompt = `
       以下の材料の組み合わせが、現実世界の料理として意味をなすかどうかを判断してください。
       明らかに食べられないもの（例: 石、土）や、現実的でない組み合わせの場合に「無効」とだけ答えてください。
