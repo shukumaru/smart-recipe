@@ -1,0 +1,245 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: 'Kiwi Maru', serif;
+  text-align: center;
+}
+
+.title {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #FF6347; /* Tomato */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.5rem;
+}
+
+.inputSection, .optionsSection {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.inputSection h2, .optionsSection h2 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.inputField, .textareaField, select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+.inputField:focus, .textareaField:focus, select:focus {
+  outline: none;
+  border-color: #FF6347;
+}
+
+.button {
+  background: linear-gradient(45deg, #FF6347, #FFA07A);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.3rem;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.4);
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 99, 71, 0.5);
+}
+
+.button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.resultsSection {
+  text-align: left;
+}
+
+.resultsSection h2 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.recipeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.recipeCard {
+  border: none;
+  border-radius: 20px;
+  padding: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.recipeCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.recipeCard h3 {
+  margin-top: 0;
+  color: #FF6347;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+}
+
+.ingredientInputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.textareaField {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #FF6347;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #e74c3c;
+  background-color: #fbe2e2;
+  border: 1px solid #e74c3c;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: left;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+.modalContent h2 {
+  margin-top: 0;
+  color: #FF6347;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+}
+
+.modalContent ul, .modalContent ol {
+  padding-left: 20px;
+}
+
+.modalContent li {
+  margin-bottom: 0.7rem;
+  line-height: 1.7;
+}
+
+.optionsSection {
+  display: flex;
+  flex-direction: column; /* Changed to column */
+  gap: 1.5rem;
+}
+
+.optionRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.optionItem label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.errorText {
+  color: #E53935; /* More vibrant red */
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-top: 4px;
+}
