@@ -149,9 +149,12 @@ const RecipePage: React.FC = () => {
       </datalist>
 
       <h1 className={styles.title}>スマートレシピくん</h1>
+      <p className={styles.subtitle}>
+        冷蔵庫にある材料を入れるとAIが料理の献立を提案してくれるよ
+      </p>
 
       <div className={styles.inputSection}>
-        <h2>冷蔵庫にあるものを教えて！</h2>
+        <h2>冷蔵庫にあるもの</h2>
         <div className={styles.ingredientInputs}>
           {ingredientInputs.map((ing, index) => (
             <div key={index} className={styles.inputWrapper}>
@@ -235,23 +238,35 @@ const RecipePage: React.FC = () => {
             </select>
           </div>
           <div className={styles.optionItem}>
-            <label>
+            <label className={styles.optionLabel}>
               <input
                 type="checkbox"
                 checked={forKids}
                 onChange={(e) => setForKids(e.target.checked)}
               />
               子供用ご飯
+              <span className={styles.hint} tabIndex={0} aria-hidden>
+                ℹ
+                <span className={styles.hintText} role="tooltip">
+                  小さい子供（1歳半～3歳向け）のご飯を提案するよ
+                </span>
+              </span>
             </label>
           </div>
           <div className={styles.optionItem}>
-            <label>
+            <label className={styles.optionLabel}>
               <input
                 type="checkbox"
                 checked={isCamping}
                 onChange={(e) => setIsCamping(e.target.checked)}
               />
               キャンプ飯
+              <span className={styles.hint} tabIndex={0} aria-hidden>
+                ℹ
+                <span className={styles.hintText} role="tooltip">
+                  キャンプで作れるような料理を提案するよ
+                </span>
+              </span>
             </label>
           </div>
         </div>

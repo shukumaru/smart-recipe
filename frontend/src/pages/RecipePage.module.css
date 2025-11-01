@@ -2,20 +2,22 @@
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  font-family: 'Kiwi Maru', serif;
+  font-family: "Kiwi Maru", serif;
   text-align: center;
 }
 
 .title {
-  font-family: 'M PLUS Rounded 1c', sans-serif;
-  font-size: 3.5rem;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  /* responsive: scale down on small viewports to avoid awkward wrapping */
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
   font-weight: 800;
-  color: #FF6347; /* Tomato */
+  color: #ff6347; /* Tomato */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 2.5rem;
 }
 
-.inputSection, .optionsSection {
+.inputSection,
+.optionsSection {
   margin-bottom: 2.5rem;
   padding: 2rem;
   border-radius: 20px;
@@ -24,14 +26,17 @@
   text-align: left;
 }
 
-.inputSection h2, .optionsSection h2 {
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+.inputSection h2,
+.optionsSection h2 {
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 700;
   color: #333;
   margin-bottom: 1.5rem;
 }
 
-.inputField, .textareaField, select {
+.inputField,
+.textareaField,
+select {
   width: 100%;
   padding: 0.8rem 1rem;
   font-size: 1rem;
@@ -42,24 +47,29 @@
   font-family: inherit;
 }
 
-.inputField:focus, .textareaField:focus, select:focus {
+.inputField:focus,
+.textareaField:focus,
+select:focus {
   outline: none;
-  border-color: #FF6347;
+  border-color: #ff6347;
 }
 
 .button {
-  background: linear-gradient(45deg, #FF6347, #FFA07A);
+  background: linear-gradient(45deg, #ff6347, #ffa07a);
   color: white;
   border: none;
-  padding: 1rem 2.5rem;
-  font-size: 1.3rem;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+  /* responsive sizing to avoid forced wrapping or overflow */
+  padding: 0.9rem 1.6rem;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 700;
   border-radius: 50px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 2.5rem;
   box-shadow: 0 4px 12px rgba(255, 99, 71, 0.4);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .button:hover {
@@ -79,7 +89,7 @@
 }
 
 .resultsSection h2 {
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 700;
   color: #333;
   margin-bottom: 1.5rem;
@@ -96,20 +106,20 @@
   border-radius: 20px;
   padding: 1.5rem;
   background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .recipeCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .recipeCard h3 {
   margin-top: 0;
-  color: #FF6347;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #ff6347;
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 700;
 }
 
@@ -127,7 +137,7 @@
 
 .loader {
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #FF6347;
+  border-top: 4px solid #ff6347;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -136,8 +146,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error {
@@ -171,7 +185,7 @@
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: left;
 }
 
@@ -193,12 +207,13 @@
 
 .modalContent h2 {
   margin-top: 0;
-  color: #FF6347;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #ff6347;
+  font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 700;
 }
 
-.modalContent ul, .modalContent ol {
+.modalContent ul,
+.modalContent ol {
   padding-left: 20px;
 }
 
@@ -238,8 +253,74 @@
 }
 
 .errorText {
-  color: #E53935; /* More vibrant red */
+  color: #e53935; /* More vibrant red */
   font-size: 0.8rem;
   font-weight: bold;
   margin-top: 4px;
+}
+
+/* subtitle under the main title */
+.subtitle {
+  font-family: "Kiwi Maru", serif;
+  color: #666;
+  margin-top: -0.6rem;
+  margin-bottom: 1.6rem;
+  font-size: 1.05rem;
+}
+
+/* tooltip/hint styles for option items */
+.optionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hint {
+  display: inline-block;
+  margin-left: 0.4rem;
+  color: #888;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+  width: 1.6rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: help;
+  position: relative;
+}
+
+.hintText {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  z-index: 30;
+}
+
+.hint:focus .hintText,
+.hint:hover .hintText {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Small-screen adjustments specifically for title and button to avoid awkward wrapping */
+@media (max-width: 420px) {
+  .title {
+    font-size: clamp(1.4rem, 8vw, 2.4rem);
+  }
+
+  .button {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+  }
 }
