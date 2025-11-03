@@ -29,10 +29,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       style={{ textAlign: "center", paddingTop: "100px" }}
     >
       <h1 className={styles.title}>スマートレシピくんへようこそ</h1>
+      <img
+        src="/top_picture.png"
+        alt="top picture"
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          margin: "15px auto",
+          marginTop: "-40px",
+        }}
+      />
       <p className={styles.subtitle}>
         続けるにはGoogleアカウントでログインしてください。
       </p>
-      <div style={{ marginTop: "40px" }}>
+      <div style={{ margin: "15px auto" }}>
         <GoogleLogin
           onSuccess={handleLoginSuccess}
           onError={handleLoginError}

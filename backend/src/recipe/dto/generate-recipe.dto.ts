@@ -34,11 +34,19 @@ export class GenerateRecipeDto {
 
   @ApiProperty({
     example: false,
-    description: '子供向け（1歳半頃）のレシピかどうか',
+    description: '離乳食のレシピかどうか',
     type: Boolean,
     required: false,
   })
-  forKids?: boolean;
+  isBabyFood?: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: '幼児食（1歳半頃～3歳）のレシピかどうか',
+    type: Boolean,
+    required: false,
+  })
+  isToddlerFood?: boolean;
 
   @ApiProperty({
     example: false,

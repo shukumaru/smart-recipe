@@ -19,7 +19,8 @@ export class GeminiService {
     cookingTime?: number;
     recipeCount?: number;
     genre?: string;
-    forKids?: boolean;
+    isBabyFood?: boolean;
+    isToddlerFood?: boolean;
     isCamping?: boolean;
     servings?: number;
   }): Promise<any> {
@@ -32,7 +33,8 @@ export class GeminiService {
       cookingTime = 30,
       recipeCount = 5,
       genre = '指定なし',
-      forKids = false,
+      isBabyFood = false,
+      isToddlerFood = false,
       isCamping = false,
       servings = 2,
     } = options;
@@ -53,9 +55,15 @@ export class GeminiService {
       - 分量: ${servings}人分
     `;
 
-    if (forKids) {
+    if (isBabyFood) {
       prompt += `
-        - 子供向け（1歳半頃）の離乳食完了期の食事にしてください。味付けは薄めで、食材は小さく刻んでください。
+        - 離乳食（初期～完了期）の食事にしてください。月齢に合わせた調理法（例：ペースト状、みじん切り）を考慮し、アレルギーにも配慮してください。
+      `;
+    }
+
+    if (isToddlerFood) {
+      prompt += `
+        - 幼児食（1歳半頃～3歳）の食事にしてください。味付けは薄めで、食材は小さく刻んでください。
       `;
     }
 

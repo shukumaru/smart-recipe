@@ -75,7 +75,8 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
   const [cookingTime, setCookingTime] = useState<number>(30);
   const [recipeCount, setRecipeCount] = useState<number>(3);
   const [genre, setGenre] = useState<string>("指定なし");
-  const [forKids, setForKids] = useState<boolean>(false);
+  const [isBabyFood, setIsBabyFood] = useState<boolean>(false);
+  const [isToddlerFood, setIsToddlerFood] = useState<boolean>(false);
   const [isCamping, setIsCamping] = useState<boolean>(false);
   const [servings, setServings] = useState<number>(2);
 
@@ -127,13 +128,14 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
         cookingTime,
         recipeCount,
         genre,
-        forKids,
+        isBabyFood,
+        isToddlerFood,
         isCamping,
         servings,
       };
       const result = await apiClient.generateRecipes(options);
       setRecipes(result);
-    } catch (err: any) { 
+    } catch (err: any) {
       setError(err.message || "不明なエラーが発生しました。");
       setRecipes([]);
     } finally {
@@ -175,10 +177,20 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
       </datalist>
 
       <h1 className={styles.title}>スマートレシピくん</h1>
+      <img
+        src="/top_picture.png"
+        alt="top picture"
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          margin: "15px auto",
+          marginTop: "-40px",
+          display: "block",
+        }}
+      />
       <p className={styles.subtitle}>
         冷蔵庫にある材料を入れるとAIが料理の献立を提案してくれるよ
       </p>
-
       <div className={styles.inputSection}>
         <h2>冷蔵庫にあるもの</h2>
         <div className={styles.ingredientInputs}>
@@ -267,10 +279,38 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
             <label className={styles.optionLabel}>
               <input
                 type="checkbox"
-                checked={forKids}
-                onChange={(e) => setForKids(e.target.checked)}
+                checked={isBabyFood}
+                onChange={(e) => {
+                  setIsBabyFood(e.target.checked);
+                  if (e.target.checked) {
+                    setIsToddlerFood(false);
+                  }
+                }}
+                disabled={isToddlerFood}
               />
-              子供用ご飯
+              離乳食
+              <span className={styles.hint} tabIndex={0} aria-hidden>
+                ℹ
+                <span className={styles.hintText} role="tooltip">
+                  離乳食（初期～完了期）を提案するよ
+                </span>
+              </span>
+            </label>
+          </div>
+          <div className={styles.optionItem}>
+            <label className={styles.optionLabel}>
+              <input
+                type="checkbox"
+                checked={isToddlerFood}
+                onChange={(e) => {
+                  setIsToddlerFood(e.target.checked);
+                  if (e.target.checked) {
+                    setIsBabyFood(false);
+                  }
+                }}
+                disabled={isBabyFood}
+              />
+              幼児食
               <span className={styles.hint} tabIndex={0} aria-hidden>
                 ℹ
                 <span className={styles.hintText} role="tooltip">
