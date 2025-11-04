@@ -37,12 +37,14 @@
     ```
 
 3.  **環境変数の設定**:
-    `backend`ディレクトリの直下に`.env`ファイルを作成し、ご自身のGemini APIキーを設定してください。
+    `backend`ディレクトリの直下に`.env`ファイルを作成し、ご自身のGemini APIキー,GoogleOAuth2.0クライアントIDを設定してください。
 
     ```
     API_KEY=YOUR_GEMINI_API_KEY
+    VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
     ```
     ※ APIキーは[Google AI for Developers](https://ai.google.dev/)などから取得してください。
+    ※ GoogleOAuth2.0クライアントIDは[Google Cloud Console](https://console.cloud.google.com/)から取得してください。
 
 4.  **開発サーバーの起動**:
     ```bash
@@ -62,7 +64,14 @@
     npm install
     ```
 
-3.  **開発サーバーの起動**:
+3.  **環境変数の設定**:
+    `frontend`ディレクトリの直下に`.env`ファイルを作成し、ご自身のGoogleOAuth2.0クライアントIDを設定してください。
+
+    ```
+    VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+    ```
+
+4.  **開発サーバーの起動**:
     ```bash
     npm run dev
     ```
