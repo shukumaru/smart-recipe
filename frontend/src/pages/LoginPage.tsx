@@ -28,7 +28,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       className={styles.container}
       style={{ textAlign: "center", paddingTop: "100px" }}
     >
-      <h1 className={styles.title}>スマートレシピくんへようこそ</h1>
+      <h1 className={styles.title}>レシピサポートくんへようこそ</h1>
       <img
         src="/top_picture.png"
         alt="top picture"

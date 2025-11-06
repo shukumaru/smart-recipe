@@ -176,7 +176,7 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
         ))}
       </datalist>
 
-      <h1 className={styles.title}>スマートレシピくん</h1>
+      <h1 className={styles.title}>レシピサポートくん</h1>
       <img
         src="/top_picture.png"
         alt="top picture"
