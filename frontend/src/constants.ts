@@ -77,8 +77,8 @@ export const recipeCountOptions = [
 ];
 
 export const genreOptions = [
-  { value: '指定なし', label: '指定なし' },
-  { value: '和食', label: '和食' },
-  { value: '洋食', label: '洋食' },
-  { value: '中華', label: '中華' },
+  { value: 'none', label: '指定なし' },
+  { value: 'japanese', label: '和食' },
+  { value: 'western', label: '洋食' },
+  { value: 'chinese', label: '中華' },
 ];

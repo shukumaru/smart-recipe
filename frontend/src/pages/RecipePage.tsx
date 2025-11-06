@@ -74,7 +74,7 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
   // New state for additional options
   const [cookingTime, setCookingTime] = useState<number>(30);
   const [recipeCount, setRecipeCount] = useState<number>(3);
-  const [genre, setGenre] = useState<string>("指定なし");
+  const [genre, setGenre] = useState<string>("none");
   const [isBabyFood, setIsBabyFood] = useState<boolean>(false);
   const [isToddlerFood, setIsToddlerFood] = useState<boolean>(false);
   const [isCamping, setIsCamping] = useState<boolean>(false);
