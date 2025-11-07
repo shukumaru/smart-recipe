@@ -5,13 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
+import { Request, Response } from 'express';
+import { AuthService } from '../auth/auth.service'; // Assuming AuthService is in this path
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   private readonly client: OAuth2Client;
   private readonly googleClientId: string;
 
-  constructor() {
+  constructor(private readonly authService: AuthService) {
     const googleClientId = process.env.GOOGLE_CLIENT_ID;
     if (!googleClientId) {
       throw new Error('GOOGLE_CLIENT_ID is not set in environment variables.');
@@ -21,23 +23,20 @@ export class AuthGuard implements CanActivate {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers.authorization;
+    const request = context.switchToHttp().getRequest<Request>();
+    const response = context.switchToHttp().getResponse<Response>();
+    const cookies = (request.cookies ?? {}) as Record<
+      string,
+      string | undefined
+    >;
+    const token = cookies['id_token'];
 
-    if (!authHeader) {
-      throw new UnauthorizedException('Authorization header not found.');
+    if (!token) {
+      throw new UnauthorizedException('ID token not found in cookie.');
     }
-
-    const parts = authHeader.split(' ');
-    if (parts.length !== 2 || parts[0] !== 'Bearer') {
-      throw new UnauthorizedException(
-        'Invalid authorization header format. Format is: Bearer <token>',
-      );
-    }
-
-    const token = parts[1];
 
     try {
+      // First, try to verify the token
       const ticket = await this.client.verifyIdToken({
         idToken: token,
         audience: this.googleClientId,
@@ -48,13 +47,50 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('Invalid token: payload is missing.');
       }
 
-      // Attach user payload to the request object for future use
-      request.user = payload;
-
+      (request as any).user = payload;
       return true;
     } catch (error) {
-      console.error('Token verification failed:', error.message);
-      throw new UnauthorizedException('Invalid token or token expired.');
+      // If token verification fails, it might be expired. Try to refresh it.
+      console.log('Token verification failed, attempting to refresh...');
+      try {
+        // We need the user ID (sub) to find the refresh token.
+        // We can get it by decoding the expired token without verification.
+        const payloadBase64 = token.split('.')[1];
+        const decodedJson = Buffer.from(payloadBase64, 'base64').toString();
+        const decodedPayload = JSON.parse(decodedJson);
+        const userId = decodedPayload.sub;
+
+        if (!userId) {
+          throw new UnauthorizedException('Cannot find user ID in token.');
+        }
+
+        const newIdToken = await this.authService.refreshAccessToken(userId);
+
+        // Verify the new token to be sure
+        const newTicket = await this.client.verifyIdToken({
+          idToken: newIdToken,
+          audience: this.googleClientId,
+        });
+        const newPayload = newTicket.getPayload();
+        if (!newPayload) {
+          throw new UnauthorizedException('Invalid new token payload.');
+        }
+
+        // Set the new token in the cookie
+        response.cookie('id_token', newIdToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+        });
+
+        (request as any).user = newPayload;
+        return true;
+      } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError.message);
+        // If refresh also fails, clear the cookie and throw unauthorized
+        response.clearCookie('id_token');
+        throw new UnauthorizedException('Invalid token and refresh failed.');
+      }
     }
   }
 }

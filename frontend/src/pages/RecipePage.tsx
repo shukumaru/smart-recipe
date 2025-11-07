@@ -55,7 +55,7 @@ const RecipeDetailModal: React.FC<{
   );
 };
 
-const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
+const RecipePage: React.FC = () => {
   const [ingredientInputs, setIngredientInputs] = useState<string[]>(
     Array(3).fill("")
   );
@@ -107,11 +107,6 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
   }, [ingredientInputs, commaIngredients, ingredientErrors]);
 
   const handleSuggestionClick = async () => {
-    if (!idToken) {
-      setError("Googleアカウントでログインしてください。");
-      return;
-    }
-
     setIsLoading(true);
     setError(null);
     setRecipes([]);
@@ -123,7 +118,7 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
     }
 
     try {
-      const apiClient = createApiClient(idToken);
+      const apiClient = createApiClient();
       const options = {
         ingredients: allIngredients,
         cookingTime,
@@ -155,9 +150,6 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
   };
 
   const getButtonState = () => {
-    if (!idToken) {
-      return { disabled: true, text: "ログインしてください" };
-    }
     if (isLoading) {
       return { disabled: true, text: "AIが考え中..." };
     }

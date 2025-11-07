@@ -1,48 +1,31 @@
-import type { Recipe } from "../types/recipe";
+import axios from 'axios';
+import type { Recipe, RecipeGenerationOptions } from '../types/recipe';
 
-const API_URL = import.meta.env.PROD
-  ? import.meta.env.VITE_API_URL
-  : "/api";
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-export interface GenerateRecipeOptions {
-  ingredients: string[];
-  cookingTime?: number;
-  recipeCount?: number;
-  genre?: string;
-  forKids?: boolean;
-  isCamping?: boolean;
-  servings?: number;
-}
+// This function now doesn't need the token, but we keep the structure
+// in case we need other client-specific configurations later.
+export const createApiClient = () => {
+  const instance = axios.create({
+    baseURL,
+    withCredentials: true, // This is crucial for sending cookies
+  });
 
-export const createApiClient = (idToken: string | null) => {
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      const message = error.response?.data?.message || error.message;
+      return Promise.reject(new Error(message));
+    },
+  );
+
+  return {
+    generateRecipes: async (
+      options: RecipeGenerationOptions,
+    ): Promise<Recipe[]> => {
+      const response = await instance.post('/recipe/generate', options);
+      return response.data;
+    },
+    // Add other API methods here
   };
-
-  if (idToken) {
-    headers["Authorization"] = `Bearer ${idToken}`;
-  }
-
-  const generateRecipes = async (
-    options: GenerateRecipeOptions
-  ): Promise<Recipe[]> => {
-    const response = await fetch(`${API_URL}/recipe/generate`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(options),
-    });
-
-    if (!response.ok) {
-      // For 401/403 errors, the response might not be JSON.
-      if (response.status === 401 || response.status === 403) {
-        throw new Error("認証エラーが発生しました。再度ログインしてください。");
-      }
-      const errorData = await response.json().catch(() => ({ message: 'レシピの生成に失敗しました。' }));
-      throw new Error(errorData.message || "レシピの生成に失敗しました。");
-    }
-
-    return response.json();
-  };
-
-  return { generateRecipes };
 };
