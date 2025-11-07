@@ -89,7 +89,9 @@ export class AuthGuard implements CanActivate {
         console.error('Token refresh failed:', refreshError.message);
         // If refresh also fails, clear the cookie and throw unauthorized
         response.clearCookie('id_token');
-        throw new UnauthorizedException('Invalid token and refresh failed.');
+        throw new UnauthorizedException(
+          '認証エラー。再度ログインしなおして下さい。',
+        );
       }
     }
   }
