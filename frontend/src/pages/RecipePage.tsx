@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import type { Recipe } from "../types/recipe";
 import { createApiClient } from "../services/api";
+import { Link } from "react-router-dom";
 import styles from "./RecipePage.module.css";
 import {
   ingredientSuggestions,
@@ -369,6 +370,10 @@ const RecipePage: React.FC = () => {
       </div>
 
       <RecipeDetailModal recipe={selectedRecipe} onClose={closeModal} />
+
+      <footer className={styles.footer}>
+        <Link to="/license">Open Source Licenses</Link>
+      </footer>
     </div>
   );
 };

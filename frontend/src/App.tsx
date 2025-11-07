@@ -10,6 +10,7 @@ import {
 import axios from 'axios';
 import RecipePage from './pages/RecipePage';
 import LoginPage from './pages/LoginPage';
+import LicensePage from './pages/LicensePage';
 import './App.css';
 
 const AppContent: React.FC = () => {
@@ -85,6 +86,7 @@ const AppContent: React.FC = () => {
             }
           />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/license" element={<LicensePage />} />
         </Routes>
       </main>
     </div>
