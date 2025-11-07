@@ -99,6 +99,7 @@ const RecipePage: React.FC<RecipePageProps> = ({ idToken }) => {
       (ing, index) => ing.trim() !== "" && !ingredientErrors[index]
     );
     const ingredientsFromComma = commaIngredients
+      .replace(/、/g, ",")
       .split(",")
       .map((ing) => ing.trim())
       .filter((ing) => ing !== "");
