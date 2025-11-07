@@ -17,8 +17,8 @@ export class AuthController {
     // Set the ID token in a secure, HttpOnly cookie
     res.cookie('id_token', idToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      sameSite: 'lax',
+      secure: true, // Must be true when SameSite is 'None'
+      sameSite: 'none',
       // expires: new Date(Date.now() + 3600 * 1000), // 1 hour
     });
 

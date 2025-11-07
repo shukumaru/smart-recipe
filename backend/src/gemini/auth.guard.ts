@@ -79,8 +79,8 @@ export class AuthGuard implements CanActivate {
         // Set the new token in the cookie
         response.cookie('id_token', newIdToken, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          secure: true, // Must be true when SameSite is 'None'
+          sameSite: 'none',
         });
 
         (request as any).user = newPayload;
